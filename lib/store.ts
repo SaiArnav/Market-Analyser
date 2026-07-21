@@ -231,14 +231,16 @@ export function getTimeline(companyId: string): TimelineEvent[] {
 
 export function detectTrends(signals: Signal[], company: Company): { hiring: number; sentiment: number; patent: number; news: number; product: number; leadership: number; funding: number; partnershipScore: number } {
   const real = signals.filter(s => !s.synthetic);
-  const hiring = real.filter(s => s.signalType === 'hiring');
-  const news = real.filter(s => s.signalType === 'news');
-  const reddit = real.filter(s => s.signalType === 'reddit_sentiment');
-  const patents = real.filter(s => s.signalType === 'patent');
-  const product = real.filter(s => s.signalType === 'product_hunt' || s.signalType === 'product_launch');
-  const leadership = real.filter(s => s.signalType === 'leadership');
-  const funding = real.filter(s => s.signalType === 'funding');
-  const partnership = real.filter(s => s.signalType === 'partnership');
+  const useReal = real.length >= 4;
+  const effective = useReal ? real : signals;
+  const hiring = effective.filter(s => s.signalType === 'hiring');
+  const news = effective.filter(s => s.signalType === 'news');
+  const reddit = effective.filter(s => s.signalType === 'reddit_sentiment');
+  const patents = effective.filter(s => s.signalType === 'patent');
+  const product = effective.filter(s => s.signalType === 'product_hunt' || s.signalType === 'product_launch');
+  const leadership = effective.filter(s => s.signalType === 'leadership');
+  const funding = effective.filter(s => s.signalType === 'funding');
+  const partnership = effective.filter(s => s.signalType === 'partnership');
 
   const clamp = (v: number) => Math.round(Math.max(0, Math.min(100, v)));
 
@@ -276,24 +278,24 @@ export function detectTrends(signals: Signal[], company: Company): { hiring: num
     : clamp(8 + hCrisis*30 - hEng*8);
 
   // === SENTIMENT (based on ALL signals) ===
-  const allTitles = real.map(s => s.title);
-  const cRatio = ratio(allTitles, KW.crisis);
-  const gRatio = ratio(allTitles, KW.growth);
-  const lRatio = ratio(allTitles, KW.legal);
-  const pRatio = ratio(allTitles, KW.product);
-  const tRatio = ratio(allTitles, KW.tech);
-  const uRatio = ratio(allTitles, KW.upbeat);
+  const effectiveTitles = effective.map(s => s.title);
+  const cRatio = ratio(effectiveTitles, KW.crisis);
+  const gRatio = ratio(effectiveTitles, KW.growth);
+  const lRatio = ratio(effectiveTitles, KW.legal);
+  const pRatio = ratio(effectiveTitles, KW.product);
+  const tRatio = ratio(effectiveTitles, KW.tech);
+  const uRatio = ratio(effectiveTitles, KW.upbeat);
 
   const avgSent = (() => {
-    const v = real.map(s => s.sentimentScore??0).filter(x => x !== 0);
+    const v = effective.map(s => s.sentimentScore??0).filter(x => x !== 0);
     return v.length > 0 ? v.reduce((a,b)=>a+b,0)/v.length : 0;
   })();
 
-  const nCount = real.filter(s => (s.sentimentScore??0) < 0).length;
-  const pCount = real.filter(s => (s.sentimentScore??0) > 0).length;
+  const nCount = effective.filter(s => (s.sentimentScore??0) < 0).length;
+  const pCount = effective.filter(s => (s.sentimentScore??0) > 0).length;
   const tScored = nCount + pCount;
 
-  const sentimentScore = tScored === 0 && real.length === 0 ? 0
+  const sentimentScore = tScored === 0 && effective.length === 0 ? 0
     : clamp(
         (tScored > 0 ? (nCount / tScored) * 40 : 20) +
         cRatio * 25 +
