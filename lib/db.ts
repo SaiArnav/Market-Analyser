@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client';
-import { PrismaLibSql } from '@prisma/adapter-libsql';
+import { PrismaLibSQL } from '@prisma/adapter-libsql';
+import { createClient } from '@libsql/client';
 import bcrypt from 'bcryptjs';
 import type { NextRequest } from 'next/server';
 
@@ -8,7 +9,8 @@ const globalForPrisma = globalThis as unknown as { prisma: PrismaClient };
 function createPrismaClient() {
   const url = process.env.DATABASE_URL || '';
   if (url.startsWith('libsql://') || url.startsWith('http://') || url.startsWith('https://')) {
-    const adapter = new PrismaLibSql({ url });
+    const libsql = createClient({ url });
+    const adapter = new PrismaLibSQL(libsql);
     return new PrismaClient({ adapter } as any);
   }
   return new PrismaClient();
