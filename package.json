@@ -1,7 +1,8 @@
 {
   "name": "market-autopsy",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
+  "description": "AI-powered market intelligence platform for evidence-led company monitoring",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -12,8 +13,6 @@
     "postinstall": "prisma generate"
   },
   "dependencies": {
-    "@libsql/client": "^0.8.0",
-    "@prisma/adapter-libsql": "^5.22.0",
     "@prisma/client": "^5.22.0",
     "@types/three": "^0.185.1",
     "bcryptjs": "^3.0.3",
