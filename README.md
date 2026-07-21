@@ -2,7 +2,7 @@
 
 > AI-powered market intelligence platform for evidence-led company monitoring.
 
-MarketAutopsy runs on-demand deep research on companies using public signals across **news, hiring, patents, customer sentiment, leadership changes, funding activity, product launches, and strategic market signals**. It combines real-time data collection with GPT-4o analysis to produce explainable risk scores and actionable intelligence.
+MarketAutopsy runs on-demand deep research on companies using public signals across **news, hiring, patents, customer sentiment, leadership changes, funding activity, product launches, and strategic market signals**. It combines real-time data collection with GPT-5.6, Codex analysis to produce explainable risk scores and actionable intelligence.
 
 Built with **Next.js 14 (App Router)**, **Tailwind CSS**, **Framer Motion**, **Three.js**, and **Recharts**.
 
@@ -59,7 +59,7 @@ Built with **Next.js 14 (App Router)**, **Tailwind CSS**, **Framer Motion**, **T
 | **Fonts** | Geist, Inter, Manrope, DM Mono |
 | **Backend** | Next.js API routes (App Router) |
 | **Database** | In-memory (file-backed JSON on disk) |
-| **AI** | OpenAI GPT-4o for analysis, scoring, and report generation |
+| **AI** | OpenAI GPT-5.6 for analysis, scoring, and report generation |
 
 ---
 
