@@ -8,6 +8,29 @@ Built with **Next.js 14 (App Router)**, **Prisma**, **PostgreSQL**, **Tailwind C
 
 ---
 
+## AI Tools Used
+
+### GPT-5.6
+
+The core intelligence engine of MarketAutopsy is powered by OpenAI's GPT-5.6. It drives:
+
+- **Multi-turn agentic analysis** — GPT-5.6 autonomously decides which data sources to query (GDELT, Greenhouse, PatentsView, Reddit, NewsAPI, Product Hunt), how many rounds of evidence to collect, and when it has sufficient data to score.
+- **Structured risk scoring** — Produces explainable risk scores across 8 weighted dimensions (hiring health, customer sentiment, patent activity, news sentiment, funding health, leadership stability, strategic signals, partnership activity).
+- **Executive report generation** — Generates natural-language strategy reports with evidence-backed recommendations, linked citations, and actionable insights.
+- **Prediction engine** — Forecasts company trajectory (growing, declining, stable, pivoting) with confidence scores and supporting evidence.
+
+### Codex
+
+OpenAI Codex was used throughout the development process to:
+
+- **Scaffold the project architecture** — Initial Next.js 14 App Router setup, Prisma schema design, and API route structure.
+- **Build the AI agent pipeline** — Multi-turn tool-use loop, function calling schemas, structured JSON output parsing, and defensive validation.
+- **Implement data collectors** — GDELT, Greenhouse, Lever, PatentsView, Reddit, NewsAPI, and Product Hunt integrations with error handling and fallback logic.
+- **Create the frontend** — WebGL shader code, Three.js brain visualization, Framer Motion animations, responsive dark theme, and Recharts dashboards.
+- **Debug and iterate** — Debugging database migration issues (SQLite → Turso → PostgreSQL), fixing serverless cold-start problems, and resolving authentication edge cases.
+
+---
+
 ## Features
 
 ### Landing Page
