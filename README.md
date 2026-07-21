@@ -12,22 +12,22 @@ Built with **Next.js 14 (App Router)**, **Prisma**, **PostgreSQL**, **Tailwind C
 
 ### GPT-5.6
 
-The core intelligence engine of MarketAutopsy is powered by OpenAI's GPT-5.6. It drives:
+MarketAutopsy integrates OpenAI's GPT-5.6 for advanced analysis capabilities:
 
-- **Multi-turn agentic analysis** — GPT-5.6 autonomously decides which data sources to query (GDELT, Greenhouse, PatentsView, Reddit, NewsAPI, Product Hunt), how many rounds of evidence to collect, and when it has sufficient data to score.
-- **Structured risk scoring** — Produces explainable risk scores across 8 weighted dimensions (hiring health, customer sentiment, patent activity, news sentiment, funding health, leadership stability, strategic signals, partnership activity).
-- **Executive report generation** — Generates natural-language strategy reports with evidence-backed recommendations, linked citations, and actionable insights.
-- **Prediction engine** — Forecasts company trajectory (growing, declining, stable, pivoting) with confidence scores and supporting evidence.
+- **Agentic analysis pipeline** — A multi-turn tool-use agent that autonomously queries data sources (GDELT, Greenhouse, PatentsView, Reddit, NewsAPI, Product Hunt), reasons over evidence, and decides when sufficient data has been collected.
+- **Structured output with validation** — Uses OpenAI's JSON schema response format to produce typed, validated risk scores across 8 dimensions with defensive clamping and fallback defaults.
+- **Executive report generation** — Produces natural-language strategy reports with evidence-backed recommendations and linked citations.
+
+> **Note:** The AI agent requires a valid `OPENAI_API_KEY` to run. Without it, the platform falls back to a deterministic keyword-based scoring engine that still produces risk scores using regex pattern matching across the same data sources.
 
 ### Codex
 
-OpenAI Codex was used throughout the development process to:
+OpenAI Codex was used as a coding assistant during development to:
 
-- **Scaffold the project architecture** — Initial Next.js 14 App Router setup, Prisma schema design, and API route structure.
-- **Build the AI agent pipeline** — Multi-turn tool-use loop, function calling schemas, structured JSON output parsing, and defensive validation.
-- **Implement data collectors** — GDELT, Greenhouse, Lever, PatentsView, Reddit, NewsAPI, and Product Hunt integrations with error handling and fallback logic.
-- **Create the frontend** — WebGL shader code, Three.js brain visualization, Framer Motion animations, responsive dark theme, and Recharts dashboards.
-- **Debug and iterate** — Debugging database migration issues (SQLite → Turso → PostgreSQL), fixing serverless cold-start problems, and resolving authentication edge cases.
+- **Scaffold the project** — Next.js 14 App Router structure, Prisma schema, and API route architecture.
+- **Build data integrations** — Signal collectors for GDELT, Greenhouse, Lever, PatentsView, Reddit, NewsAPI, and Product Hunt with error handling and fallback logic.
+- **Develop the frontend** — WebGL shader, Three.js visualization, Framer Motion animations, responsive dark theme, and Recharts dashboards.
+- **Debug and iterate** — Database migration issues, serverless cold-start problems, and authentication edge cases.
 
 ---
 
@@ -94,7 +94,7 @@ OpenAI Codex was used throughout the development process to:
 | **Backend** | Next.js API routes (App Router) |
 | **Database** | PostgreSQL (Neon) via Prisma ORM |
 | **Auth** | bcryptjs, httpOnly cookies |
-| **AI** | OpenAI GPT-5.6 / Codex for analysis, scoring, and report generation |
+| **AI** | OpenAI GPT-5.6 (agentic analysis, scoring, reports) + deterministic keyword engine |
 
 ---
 
