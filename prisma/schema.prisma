@@ -1,0 +1,109 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String    @id @default(uuid())
+  email     String    @unique
+  password  String
+  createdAt DateTime  @default(now())
+  companies Company[]
+}
+
+model Company {
+  id               String         @id @default(uuid())
+  name             String
+  industry         String?
+  website          String?
+  foundedYear      Int?
+  greenhouseToken  String?
+  leverSlug        String?
+  userId           String
+  user             User           @relation(fields: [userId], references: [id])
+  createdAt        DateTime       @default(now())
+  lastNotifiedScore Int?
+  lastNotifiedAt   DateTime?
+  signals          Signal[]
+  scores           Score[]
+  scoreSnapshots   ScoreSnapshot[]
+  timelineEvents   TimelineEvent[]
+  reports          ExecutiveReport[]
+}
+
+model Signal {
+  id             String   @id @default(uuid())
+  companyId      String
+  company        Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  signalType     String
+  title          String
+  description    String?
+  sourceUrl      String?
+  sentimentScore Float?
+  category       String?
+  tags           String   @default("[]")
+  rawPayload     String  @default("{}")
+  detectedAt     DateTime @default(now())
+}
+
+model Score {
+  id              String   @id @default(uuid())
+  companyId       String
+  company         Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  score           Int
+  explanation     String   @default("")
+  computedAt      DateTime @default(now())
+  hiringDecline   Int      @default(0)
+  negativeSentiment Int    @default(0)
+  patentStagnation Int     @default(0)
+  negativeNews    Int      @default(0)
+  productStagnation Int    @default(0)
+  leadershipInstability Int @default(0)
+  fundingHealth   Int      @default(0)
+  partnershipScore Int     @default(0)
+  predictions     String   @default("[]")
+  opportunities   String   @default("[]")
+}
+
+model ScoreSnapshot {
+  id              String   @id @default(uuid())
+  companyId       String
+  company         Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  score           Int
+  hiringDecline   Int      @default(0)
+  negativeSentiment Int    @default(0)
+  patentStagnation Int     @default(0)
+  negativeNews    Int      @default(0)
+  productStagnation Int    @default(0)
+  leadershipInstability Int @default(0)
+  fundingHealth   Int      @default(0)
+  partnershipScore Int     @default(0)
+  computedAt      DateTime @default(now())
+}
+
+model TimelineEvent {
+  id          String   @id @default(uuid())
+  companyId   String
+  company     Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  signalId    String
+  title       String
+  description String   @default("")
+  eventDate   DateTime @default(now())
+  signalType  String
+  impactWeight Float   @default(0)
+  tags        String   @default("[]")
+}
+
+model ExecutiveReport {
+  id          String   @id @default(uuid())
+  companyId   String
+  company     Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  title       String
+  summary     String   @default("")
+  reportJson  String   @default("{}")
+  generatedAt DateTime @default(now())
+}
