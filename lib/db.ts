@@ -1,22 +1,9 @@
 import { PrismaClient } from '@prisma/client';
-import { PrismaLibSQL } from '@prisma/adapter-libsql';
-import { createClient } from '@libsql/client';
 import bcrypt from 'bcryptjs';
 import type { NextRequest } from 'next/server';
 
 const globalForPrisma = globalThis as unknown as { prisma: PrismaClient };
-
-function createPrismaClient() {
-  const url = process.env.DATABASE_URL || '';
-  if (url.startsWith('libsql://') || url.startsWith('http://') || url.startsWith('https://')) {
-    const libsql = createClient({ url });
-    const adapter = new PrismaLibSQL(libsql);
-    return new PrismaClient({ adapter } as any);
-  }
-  return new PrismaClient();
-}
-
-export const prisma = globalForPrisma.prisma ?? createPrismaClient();
+export const prisma = globalForPrisma.prisma ?? new PrismaClient();
 if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;
 
 const SALT_ROUNDS = 12;
